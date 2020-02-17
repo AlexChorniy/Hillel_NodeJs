@@ -1,0 +1,19 @@
+{
+  "name": "hillel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexChorniy/Hillel_NodeJs.git"
+  },
+  "author": "A.Chorniy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexChorniy/Hillel_NodeJs/issues"
+  },
+  "homepage": "https://github.com/AlexChorniy/Hillel_NodeJs#readme"
+}
