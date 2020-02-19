@@ -4,6 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "cross-env node app.js",
+    "start:env": "cross-env  EXT=js node --inspect app.js --color='blue'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/AlexChorniy/Hillel_NodeJs/issues"
   },
-  "homepage": "https://github.com/AlexChorniy/Hillel_NodeJs#readme"
+  "homepage": "https://github.com/AlexChorniy/Hillel_NodeJs#readme",
+  "dependencies": {
+    "cross-env": "^7.0.0",
+    "dotenv": "^8.2.0"
+  }
 }
