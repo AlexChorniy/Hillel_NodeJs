@@ -1,12 +1,17 @@
-// require('dotenv').config();
-const path = require('path'), fs = require('fs');
-// const path = require('path');
-// // process.env
-// console.log("EXT", __dirname);
-// // console.log("ARG", process.argv);
+require('dotenv').config();
+const path = require('path'), { readdirSync } = require('fs');
+// console.log("EXT", process.env);
+// console.log("ARG", process.argv);
+const dirsPath = path.dirname(__dirname);
+const normalizedPath = path.normalize(dirsPath);
+const dirArr = normalizedPath.split(path.sep);
+const files = readdirSync(__dirname);
+dirArr.pop();
+dirArr.join('\\');
+console.log('Test', dirArr);
 
-const dir = 'node_modules';
-const filter = 'index.d.ts';
-let files = fs.readdirSync(dir);
+// for (const element of dirArr) {
 
-console.log('files', __dirname);
+//     // const folder = fs.readdir(folder);
+//     
+// }
