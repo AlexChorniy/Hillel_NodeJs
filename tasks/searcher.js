@@ -1,17 +1,35 @@
 require('dotenv').config();
-const path = require('path'), { readdirSync } = require('fs');
-// console.log("EXT", process.env);
-// console.log("ARG", process.argv);
-const dirsPath = path.dirname(__dirname);
-const normalizedPath = path.normalize(dirsPath);
-const dirArr = normalizedPath.split(path.sep);
-const files = readdirSync(__dirname);
-dirArr.pop();
-dirArr.join('\\');
-console.log('Test', dirArr);
+const { workWithFiles } = require("../helpers");
+const { normalize, sep, extname } = require('path'), { readdirSync } = require('fs');
+const deep = +process.argv[5].split('=')[1];
+const pathFromArgv = process.argv[6].split('=')[1].toString();
 
-// for (const element of dirArr) {
+let currentCount = 0;
+function makeCounter() {
+    return function () {
+        return currentCount++;
+    };
+}
+let counter = makeCounter();
 
-//     // const folder = fs.readdir(folder);
-//     
-// }
+
+function fileSearcher(path) {
+    const normalizedPath = normalize(path);
+    const readDir = readdirSync(normalizedPath);
+    const pathToDirInArr = normalizedPath.split(sep);
+    const ext = process.env.EXT;
+    for (const element of readDir) {
+        if (!!extname(element)) {
+            workWithFiles(element, ext);
+        } else if (!deep || deep >= currentCount) { // TODO
+            const pathToThisElement = [...pathToDirInArr, element].join(sep)
+            if (__dirname === path) currentCount = 1;
+            counter();
+            fileSearcher(pathToThisElement);
+        }
+    }
+}
+
+fileSearcher(pathFromArgv);
+
+// setInterval(() => { }, 10000);
