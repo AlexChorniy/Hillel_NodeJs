@@ -1,9 +1,10 @@
 require('dotenv').config();
-const { workWithFiles } = require("../helpers");
+const { workWithFiles, transformArgv, transformToArray, colors } = require("../helpers");
 const { normalize, sep, extname } = require('path'), { readdirSync } = require('fs');
-const deep = +process.argv[5].split('=')[1];
-const pathFromArgv = process.argv[6].split('=')[1].toString();
-
+const deep = +transformArgv('deep') || 0;
+const color = transformToArray(transformArgv('colors')) || ['green'];
+const pathFromArgv = transformArgv('path') || __dirname;
+console.log(`${colors.green}%s${colors.reset}`, pathFromArgv);
 let currentCount = 0;
 function makeCounter() {
     return function () {
@@ -11,7 +12,6 @@ function makeCounter() {
     };
 }
 let counter = makeCounter();
-
 
 function fileSearcher(path) {
     const normalizedPath = normalize(path);
@@ -22,7 +22,7 @@ function fileSearcher(path) {
         if (!!extname(element)) {
             workWithFiles(element, ext);
         } else if (!deep || deep >= currentCount) { // TODO
-            const pathToThisElement = [...pathToDirInArr, element].join(sep)
+            const pathToThisElement = [...pathToDirInArr, element].join(sep);
             if (__dirname === path) currentCount = 1;
             counter();
             fileSearcher(pathToThisElement);
