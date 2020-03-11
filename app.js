@@ -12,11 +12,11 @@ fl.once('started', () => {
 });
 
 fl.on('file', () => {
-    console.log('Recieve file', file);
+    // console.log('Recieve file', file);
 });
 
 fl.on('processing', data => {
-    console.log('DATA', data);
+    // console.log('DATA', data);
 });
 
 fl.once('finished', () => {
