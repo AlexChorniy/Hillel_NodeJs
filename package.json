@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "cross-env node app.js --deep=0 --colors=[\"red\",\"green\",\"blue\"] --path='C:\\Users\\Alex\\Desktop' --name='in?*\\.js' ",
+    "start": "cross-env node app.js --deep=0 --colors=[\"red\",\"green\",\"blue\"] --path='/home/jddellch/NODEJS' --name='*\\.txt' --search=",
     "start:pp": "cross-env node ./assets/parseParams.js --deep=0 --colors=[\"red\",\"green\",\"blue\"] --path='C:\\Users\\Alex\\Desktop' --name='in*\\.png' ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
