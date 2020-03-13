@@ -24,12 +24,15 @@ class Finder extends EventEmitter {
         }
         );
         this.on('parse', this.parseDir);
+        this.on('search:valid', (itemName, isExtValid) => console.log("File name-", itemName, " is file valid-", isExtValid));
+        this.on('write:log', message => {
+            console.log('write:log', message);
+        });
     }
     async parseDir() {
         console.log('started');
         this.setTimer();
         const consilience = await finder(this._deep, this._fileName, this._path, this._colors, this._ext, this.emit.bind(this))();
-        // console.log('found consilience', consilience);
         this.emit('finished');
     }
     found(name) {

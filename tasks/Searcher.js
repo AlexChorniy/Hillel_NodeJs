@@ -1,45 +1,55 @@
-const { join, relative } = require("path");
+const { join } = require("path");
 const { createReadStream } = require("fs");
-const FileType = require("file-type");
-const readChunk = require("read-chunk");
+const { fromStream } = require("file-type");
 const { extname } = require("path");
-const { fullName } = require("../assets/parseParams");
+const { fullName, search } = require("../assets/parseParams");
 
-function Searcher(itemName, path) {
-  const name = fullName.name;
-  const ext = fullName.ext;
-  const reg = new RegExp(
-    `^${name === "*" ? "." : name}${
-      name.includes(" ? ") ? "?" : ""
-    }\\w*\\W*${ext}$`,
-    "ig"
-  );
-  const isMatch = !!itemName.match(reg);
-  if (isMatch) {
-    const fullPath = join(path, itemName);
-    const fileExt = extname(itemName);
-    if (fileExt === ".js" || fileExt === ".json") {
-      // const stream = createReadStream(fullPath);
-      // console.log("js", stream);
-      return true;
-    } else {
-      (async () => {
-        try {
-          const stream = createReadStream(fullPath, {
-            highWaterMark: 4100,
-            start: 20,
-            end: 20
-          });
-          const fromStream = await FileType.fromStream(stream);
-          console.log("FileType", fromStream, fileExt, itemName);
-        } catch (error) {
-          console.log("error", error);
+function Searcher(itemName, path, emitter) {
+    const name = fullName.name;
+    const ext = fullName.ext;
+    const reg = new RegExp(
+        `^${name === "*" ? "." : name}${name.includes(" ? ") ? "?" : ""}\\w*\\W*${ext}$`,
+        "ig"
+    );
+    const isMatch = !!itemName.match(reg);
+    if (isMatch) {
+        const fullPath = join(path, itemName);
+        const fileExt = extname(itemName);
+        extArr = [".js", ".json", ".txt", ".mjs"];
+        if (extArr.includes(fileExt)) {
+            const stream = createReadStream(fullPath, { encoding: 'utf-8', start: 0, end: 4100 });
+            stream.on('open', () => { });
+            stream.on('error', e => {
+                console.log('error', e);
+            });
+            stream.on('data', chunk => {
+                if (chunk.includes(search)) {
+                    const searchInd = chunk.indexOf(search)
+                    const minInd = searchInd - 20;
+                    const maxInd = +searchInd + search.length + 20;
+                    const fromInd = minInd > 0 ? minInd : 0;
+                    const toInd = maxInd > chunk.length ? chunk.length : maxInd;
+                    const message = chunk.slice(fromInd, toInd)
+                    emitter("write:log", message);
+                }
+            });
+            stream.on('closed', () => { });
+            return true;
+        } else {
+            (async () => {
+                try {
+                    const stream = createReadStream(fullPath);
+                    const fromReadStream = await fromStream(stream);
+                    const isExtValid = fileExt === `.${fromReadStream.ext}`;
+                    emitter("search:valid", itemName, isExtValid);
+                } catch (error) {
+                    console.log("error", error, '////////////', ext, fileExt, itemName);
+                }
+            })();
+            return true;
         }
-      })();
-      return true;
     }
-  }
-  return false;
+    return false;
 }
 
 module.exports = Searcher;
