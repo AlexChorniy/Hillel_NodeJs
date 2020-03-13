@@ -10,7 +10,8 @@ program
   .option("-d, --deep <number>", "deep")
   .option("-c, --path <path>", "path")
   .option("-l, --colors <items>", "colors", collect)
-  .option("-m,--name <matrix>", "file's matrix", matrix);
+  .option("-m, --name <matrix>", "file's matrix", matrix)
+  .option("-s, --search <search>", "text to search");
 program.parse(process.argv);
 function collect(value) {
   const delSquareBrackets = value.trim().replace(/[[\]]/g, "");
@@ -29,6 +30,7 @@ function matrix(fname) {
   const result = name && ext ? { name, ext } : false;
   return result;
 }
+// console.log(program);
 let HOME = homedir();
 const thisPlatform = platform;
 if (thisPlatform === "win32") HOME = HOME.replace(/\\/g, "\\\\");
@@ -40,3 +42,4 @@ exports.colors = program.colors || defaultColors;
 exports.path = program.path || HOME;
 exports.ext = process.env.EXT || JSON.parse(defaultExt);
 exports.fullName = program.name || { name: "*", ext: ".js" };
+exports.search = program.search || '';
