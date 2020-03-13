@@ -12,28 +12,27 @@ function Searcher(itemName, path, emitter) {
         "ig"
     );
     const isMatch = !!itemName.match(reg);
+
     if (isMatch) {
         const fullPath = join(path, itemName);
         const fileExt = extname(itemName);
         extArr = [".js", ".json", ".txt", ".mjs"];
         if (extArr.includes(fileExt)) {
             const stream = createReadStream(fullPath, { encoding: 'utf-8', start: 0, end: 4100 });
-            stream.on('open', () => { });
-            stream.on('error', e => {
-                console.log('error', e);
-            });
-            stream.on('data', chunk => {
-                if (chunk.includes(search)) {
-                    const searchInd = chunk.indexOf(search)
-                    const minInd = searchInd - 20;
-                    const maxInd = +searchInd + search.length + 20;
-                    const fromInd = minInd > 0 ? minInd : 0;
-                    const toInd = maxInd > chunk.length ? chunk.length : maxInd;
-                    const message = chunk.slice(fromInd, toInd)
-                    emitter("write:log", message);
+            (async () => {
+                for await (const chunk of stream) {
+                    if (chunk.includes(search)) {
+                        const searchInd = chunk.indexOf(search);
+                        const minInd = searchInd - 20;
+                        const maxInd = +searchInd + search.length + 20;
+                        const fromInd = minInd > 0 ? minInd : 0;
+                        const toInd = maxInd > chunk.length ? chunk.length : maxInd;
+                        const message = chunk.slice(fromInd, toInd);
+                        emitter("write:log", message);
+                    }
                 }
-            });
-            stream.on('closed', () => { });
+            })();
+
             return true;
         } else {
             (async () => {
@@ -43,7 +42,7 @@ function Searcher(itemName, path, emitter) {
                     const isExtValid = fileExt === `.${fromReadStream.ext}`;
                     emitter("search:valid", itemName, isExtValid);
                 } catch (error) {
-                    console.log("error", error, '////////////', ext, fileExt, itemName);
+                    console.log("error", error);
                 }
             })();
             return true;
@@ -51,5 +50,5 @@ function Searcher(itemName, path, emitter) {
     }
     return false;
 }
-
+// ws.end();
 module.exports = Searcher;

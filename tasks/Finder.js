@@ -12,7 +12,6 @@ function startParse(maxDeep, fileName, path, colors, ext, emitter) {
       if (item.isFile()) {
         emitter("found:file");
         if (Searcher(item.name, path, emitter)) {
-          // console.log('true', item.name);
           const relativePath = relative(entryPoint, join(path, item.name));
           files = [...files, relativePath];
         }

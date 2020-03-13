@@ -14,7 +14,7 @@ Private
 1
 00
  Code Issues 0 Pull requests 0 Actions Projects 0 Security Insights Settings
-supplier/.gitignore
+.gitignore
 @alxchorniy alxchorniy first commit
 424983d 7 days ago
 59 lines (51 sloc)  813 Bytes
@@ -55,6 +55,7 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
+*.log
 
 # BUCK
 buck-out/
