@@ -27,7 +27,10 @@ class Finder extends EventEmitter {
         }
         );
         this.on('parse', this.parseDir);
-        this.on('search:valid', (itemName, isExtValid) => console.log("File name-", itemName, " is file valid-", isExtValid));
+        this.on('search:valid', (itemName, isExtValid) => {
+            const message = `File name -${itemName} Is validation passed-${isExtValid} \n`;
+            ws.write(message);
+        });
         this.on('write:log', message => {
             ws.write(message);
             // ws.end();
