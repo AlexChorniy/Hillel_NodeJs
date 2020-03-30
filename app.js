@@ -1,29 +1,35 @@
-// const startParse = require('./tasks/Searcher');
-const { deep, fileName, path, colors, ext } = require('./assets/parseParams');
-const Finder = require('./ee');
+const http = require('http');
+const { join, normalize } = require('path');
+const process = require('process');
+const childProcess = require('child_process');
+const fs = require('fs');
+const { main } = require('./dev/components/view/main');
 
-// const files = startParse(deep, fileName, path, colors, ext)();
-const fl = new Finder(deep, fileName, path, colors, ext);
+const PORT = 8080;
+const HOST = '127.0.0.1';
 
-fl.once('started', () => {
-    // fl.parse();
-    fl.emit('parse');
+const server = http.createServer(async (req, res) => {
+    const { method } = req;
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const { pathname } = url;
+    const normalizePathname = normalize(pathname);
+    const rootRoute = join('/');
+
+    if (normalizePathname === rootRoute) {
+        res.setHeader('content-type', 'text/html');
+        res.write(`${main()}`);
+        res.end();
+    }
 
 });
 
-fl.on('file', () => {
-    // console.log('Recieve file', file);
+server.listen(PORT, HOST, () => {
+    const adress = server.address();
+    console.log(`Server is listening on port ${adress.port}`);
 });
 
-fl.on('processing', data => {
-    // console.log('DATA', data);
+fs.watch('app.js', (eventType, filename) => {
+    childProcess.kill();
+    cpServer = childProcess.fork(filename);
+    console.log(typeof filename);
 });
-
-fl.once('finished', () => {
-    console.log('Parsing finished');
-});
-
-// for (const file of files) {
-//     console.log('app', file);
-// }
-
