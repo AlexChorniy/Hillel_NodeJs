@@ -18,7 +18,7 @@ exports.formItem = function frmItm(
             <form 
                 className="envelope${!index ? '' : index}"
                 method="get"
-                action=""
+                action="/message"
                 style="
                     background-color: #AFEEEE;
                     border-radius: 2px;
@@ -42,7 +42,7 @@ exports.formItem = function frmItm(
                     <input 
                         type="button" 
                         value="Изменить"
-                        onclick="changeDate('change', ${id}, ${index})"
+                        onclick="changeData('change', ${id}, ${index})"
                     >
                     <input 
                         type="submit"
@@ -51,7 +51,7 @@ exports.formItem = function frmItm(
                    <input 
                         type="button" 
                         value="Удалить"
-                        onclick="changeDate('delete', ${id}, ${index})"
+                        onclick="changeData('delete', ${id}, ${index})"
                     >
                 </div>
                 <div

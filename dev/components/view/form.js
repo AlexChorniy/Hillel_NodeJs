@@ -40,7 +40,7 @@ exports.form = function frm() {
                 <input
                     type="submit"
                     value="Ответить"
-                    onclick="changeDate('answer')"
+                    onclick="changeData('answer')"
                 />
             </div>
         </div>
