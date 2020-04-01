@@ -19,11 +19,11 @@ const server = http.createServer((req, res, next) => {
     const rootRoute = join('/');
 
     const rootCheck = {
-        [rootRoute]: root(res),
-        [FRONT_SCRIPT_PATH]: rootScript(res, join(SCRIPT_PATH, FRONT_SCRIPT_PATH)),
+        [rootRoute]: () => root(res),
+        [FRONT_SCRIPT_PATH]: () => rootScript(res, join(SCRIPT_PATH, FRONT_SCRIPT_PATH)),
     };
 
-    rootCheck[normalizePathname];
+    rootCheck[normalizePathname]();
 
     // console.log('normalizePathname', normalizePathname === FRONT_SCRIPT_PATH);
 
