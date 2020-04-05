@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-course",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "start:fs": "node app2.js",
+    "start:env": "cross-env EXT=js node --inspect app3.js --color=blue",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "cross-env": "^7.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.5"
+  }
+}
