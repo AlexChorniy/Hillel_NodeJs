@@ -5,7 +5,6 @@
   "main": "app.js",
   "scripts": {
     "start": "cross-env node app.js",
-    "start:wwf": "cross-env node work_with_files.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,11 +18,8 @@
   },
   "homepage": "https://github.com/AlexChorniy/Hillel_NodeJs#readme",
   "dependencies": {
-    "chalk": "^3.0.0",
     "commander": "^4.1.1",
     "cross-env": "^7.0.0",
-    "dotenv": "^8.2.0",
-    "file-type": "^14.1.3",
-    "read-chunk": "^3.2.0"
+    "file-type": "^14.1.3"
   }
 }
