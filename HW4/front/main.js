@@ -1,11 +1,15 @@
 let filter = true;
 
 publish.onsubmit = function () {
-    var xhr = new XMLHttpRequest();
-
+    const xhr = new XMLHttpRequest();
+    //console.log("main.js publish", this.elements);
     xhr.open("POST", "/publish", true);
 
-    xhr.send(JSON.stringify({ message: this.elements.message.value }));
+    xhr.send(JSON.stringify({
+        message: this.elements.message.value,
+        name: 'UserName',
+        time: Date.now()
+    }));
 
     this.elements.message.value = '';
 
@@ -20,7 +24,7 @@ if (filter) {
 };
 
 function subscribe() {
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
 
     xhr.open("GET", "/subscribe", true);
 
@@ -31,34 +35,8 @@ function subscribe() {
             setTimeout(subscribe, 500);
             return;
         }
-        // create li element
-        const liParent = document.getElementById('messages');
-        const liClassName = 'list-group-item';
-        const liExtraClass = '';
-        createElement('li', '', this.responseText, '', liParent, liClassName, liExtraClass);
-        const btnParent = document.getElementsByClassName('list-group-item')[0];
-        const btnElementName = 'input';
-        const btnAttributes = [{
-            key: 'type',
-            value: 'button',
-        },
-        {
-            key: 'value',
-            value: "Изменить",
-        },
-        ];
-        const btnListeners = [{
-            type: 'click',
-            handler: informationBtnClickHandler,
-        }];
-        const btnClassName = 'btn btn-primary';
-        const btnExtraClass = '';
-        const cleanElem = document.getElementsByClassName(btnClassName)[0];
-        if (cleanElem) {
-            cleanElem.remove();
-        }
-        createElement(btnElementName, btnAttributes, '', btnListeners, btnParent, btnClassName, btnExtraClass);
-
+        // console.log('main.js subscribe:', this.responseText);
+        printLiElement('messages', JSON.parse(this.responseText));
     };
 
     xhr.send(null);

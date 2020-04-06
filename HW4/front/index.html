@@ -10,11 +10,14 @@
     <p class="lead">Добро пожаловать в чат!</p>
 
     <form id="publish" class="form-inline">
+        <div name="username">UserName1</div>
         <input type="text" name="message" />
         <input type="submit" class="btn btn-primary" value="Отправить" />
     </form>
 
-    <ul id="messages" class="list-group"></ul>
+    <ul class="d-flex flex-column messages"></ul>
+
+    <script src="\elements.js"></script>
     <script src="\createElement.js"></script>
     <script src="\main.js"></script>
 </body>

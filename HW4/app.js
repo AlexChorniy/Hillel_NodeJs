@@ -9,9 +9,10 @@ const PORT = 8080;
 const HOST = '127.0.0.1';
 const FRONT_PATH = join(__dirname, 'front');
 const ROOT_HTML_PATH = join(FRONT_PATH, 'index.html');
-const FRONT_SCRIPT_PATH = join('/', 'main.js');
+const FRONT_SCRIPT_PATH = join('\\', 'main.js');
 const FULL_SCRIPT_PATH = join(FRONT_PATH, FRONT_SCRIPT_PATH);
 const CREATE_ELEMENT_PATH = join('\\', 'createElement.js');
+const ELEMENTS_PATH = join('\\', 'elements.js');
 
 const PUBLISH_URL = join('\\', 'publish');
 const SUBSCRIBE_URL = join('\\', 'subscribe');
@@ -32,6 +33,10 @@ const server = http.createServer((req, res) => {
             res.setHeader('content-type', 'text/javascript');
             readStream(FULL_SCRIPT_PATH, res)
             break;
+        case ELEMENTS_PATH:
+            res.setHeader('content-type', 'text/javascript');
+            readStream(join(FRONT_PATH, ELEMENTS_PATH), res);
+            break;
         case CREATE_ELEMENT_PATH:
             res.setHeader('content-type', 'text/javascript');
             readStream(join(FRONT_PATH, CREATE_ELEMENT_PATH), res);
@@ -51,12 +56,13 @@ const server = http.createServer((req, res) => {
             req.on("end", () => {
                 try {
                     body = JSON.parse(body);
+                    console.log('app.js body:', body);
                 } catch (e) {
                     res.statusCode = 400;
                     res.end("Bad Request");
                     return;
                 }
-                chat.publish(body.message);
+                chat.publish(body);
                 res.end();
             });
             break;
@@ -68,9 +74,6 @@ const server = http.createServer((req, res) => {
 
     function readStream(fileName, res) {
         const fileStream = createReadStream(fileName);
-        const type = '';
-        // fileStream
-        //     .once("data", async chunk => type = await fileType.fromBuffer(chunk))
         fileStream
             .on('error', function () {
                 res.statusCode = 500;
