@@ -1,27 +1,34 @@
-const printLiElement = (parent, body) => {
-    // console.log('elements.js printLiElement', document.getElementsByClassName(parent)[0]);
+const printLiElement = (parent, body, index) => {
     const liParent = document.getElementsByClassName(parent)[0];
     const liElementName = 'li';
     const liClassName = 'list-group-item';
-    const liExtraClass = body.time || '';
-    createElement(liElementName, '', '', '', liParent, liClassName, liExtraClass, body.time);
+    const liExtraClass = `${body.time}`;
+    createElement(liElementName, '', '', '', liParent, liClassName, liExtraClass, index);
 
 
     const divParent = document.getElementsByClassName(`${liClassName} ${liExtraClass}`)[0];
 
-    true ?
+    body.changeTag ?
         createElement('div', '', body.message || '-', '', divParent, 'btn', liExtraClass, null)
         :
-        printButton(`${liClassName} ${liExtraClass}`, body.message || '-', 'text');
+        printButton(`${liClassName} ${liExtraClass}`, body.message || '-', 'text', liExtraClass);
 
-    createElement('div', '', body.time || '', '', divParent, 'btn', liExtraClass, null);
+    createElement('div', '', dayToday(), '', divParent, 'btn', liExtraClass, null);
     createElement('div', '', body.name || '-', '', divParent, 'btn', liExtraClass, null);
-    printButton(`${liClassName} ${liExtraClass}`, 'Change', 'button', body);
-    printButton(`${liClassName} ${liExtraClass}`, 'Delete', 'button', body);
-    printButton(`${liClassName} ${liExtraClass}`, 'Save', 'button', body);
+    printButton(`${liClassName} ${liExtraClass}`, 'Change/Save', 'button');
+    printButton(`${liClassName} ${liExtraClass}`, 'Delete', 'button');
+    // printButton(`${liClassName} ${liExtraClass}`, 'Save', 'submit');
 };
 
-function printButton(parent, valueName, typeValue, data) {
+const dayToday = () => {
+    const day = new Date().getDate();
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+    const date = `${month < 10 ? `0${month}` : month}:${day < 10 ? `0${day}` : day}:${year}`;
+    return date;
+};
+
+function printButton(parent, valueName, typeValue, extraClass) {
     const btnParent = document.getElementsByClassName(parent)[0];
     const btnElementName = 'input';
     const btnAttributes = [{
@@ -38,34 +45,16 @@ function printButton(parent, valueName, typeValue, data) {
         handler: btnLiClickHandler,
     }];
     const btnClassName = 'btn';
-    const btnExtraClass = '';
+    const btnExtraClass = extraClass;
     createElement(btnElementName, btnAttributes, '', btnListeners, btnParent, btnClassName, btnExtraClass, null);
 };
 
 const btnLiClickHandler = (e) => {
-    // console.log('elemensts.js btnLiClickHandler', );
     const valueName = e.target.value;
     const actions = {
-        Change: () => change(e),
+        'Change/Save': () => update(e),
         Delete: () => del(e),
         Save: () => save(e),
     };
-    actions[valueName]();
-
-    function change(e) {
-        const attrVal = e.target.parentNode.getAttribute('data-index');
-        console.log('Change', attrVal);
-    };
-
-    function del(e) {
-        const attrVal = e.target.parentNode.getAttribute('data-index');
-        console.log('Delete', attrVal);
-    };
-
-    function save(e) {
-        const attrVal = e.target.parentNode.getAttribute('data-index');
-        console.log('Save', attrVal);
-    };
-
-
+    actions[valueName] && actions[valueName]();
 };
