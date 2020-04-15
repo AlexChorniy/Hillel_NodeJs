@@ -2,7 +2,7 @@ let filter = true;
 
 publish.onsubmit = function () {
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/messages", true);
+    xhr.open("POST", "/messages/add", true);
 
     const senderName = document.getElementsByName('username')[0].innerText || 'userName1';
 
@@ -80,12 +80,10 @@ function update(e) {
             DATA.map((data, idx) => printLiElement('messages', data, idx + 1));
         }
     };
-    console.log('main.js update', elementValue, unixClass);
     xhr.send(JSON.stringify({ updatedTxt: elementValue }));
 };
 
 function del(e) {
-    // const attrVal = e.target.parentNode.getAttribute('data-index');
     const indificatorNum = parseInt(e.target.parentNode.classList[1]);
     const xhr = new XMLHttpRequest();
     xhr.open("DELETE", `/messages/${indificatorNum}`, true);
@@ -105,7 +103,7 @@ function del(e) {
             DATA.map((data, index) => printLiElement('messages', data, index + 1));
         }
     };
-    xhr.send(JSON.stringify({}));
+    xhr.send(null);
 };
 
 function save(e) {

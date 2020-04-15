@@ -5,6 +5,7 @@ exports.getMessagesHandler = (req, res, next) => {
     );
     res.app.locals.messages = newMessage;
     res.status(200).send(newMessage);
+    next();
 };
 
 exports.getMessageById = (req, res, next) => {
@@ -14,6 +15,7 @@ exports.getMessageById = (req, res, next) => {
         return next({ code: 404, message: 'note found' });
     }
     res.status(200).send(messages.find(message => message.id === id));
+    next();
 };
 
 exports.updateMassageById = (req, res, next) => {
@@ -36,6 +38,7 @@ exports.updateMassageById = (req, res, next) => {
     }
     res.app.locals.messages = message;
     res.status(200).json(message);
+    next();
 };
 
 exports.addNewMassage = (req, res, next) => {
@@ -49,6 +52,7 @@ exports.addNewMassage = (req, res, next) => {
         ];
 
     res.status(200).json(messages);
+    next();
 };
 
 exports.deleteMassageById = (req, res, next) => {
@@ -61,4 +65,5 @@ exports.deleteMassageById = (req, res, next) => {
 
     res.app.locals.messages = newMessages;
     res.status(200).json(newMessages);
+    next();
 };

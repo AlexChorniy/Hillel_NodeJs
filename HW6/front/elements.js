@@ -7,7 +7,6 @@ const printLiElement = (parent, body, index) => {
 
     const divParent = document.getElementsByClassName(`${liClassName} ${liExtraClass}`)[0];
     const timeCtrl = body.changeTag && body.updatedAt || body.id;
-    // console.log('printLiElement', body);
     body.changeTag
         ? createElement('div', '', body.text || '-', '', divParent, 'btn', liExtraClass, null)
         : printButton(`${liClassName} ${liExtraClass}`, body.text || '-', 'text', liExtraClass);

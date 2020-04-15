@@ -1,6 +1,5 @@
 exports.paramsGetById = (req, res, next) => {
     const { id } = req.params;
-    console.log('paramsGetById', req.params);
     const idNumber = Number(id);
     const isNumber = !isNaN(idNumber);
     if (!isNumber) {
@@ -12,7 +11,7 @@ exports.paramsGetById = (req, res, next) => {
 
 };
 
-exports.bodyUpdateMessageValidation = () => {
+exports.bodyUpdateMessageValidation = (req, res, next) => {
     //TODO
     next();
 };
