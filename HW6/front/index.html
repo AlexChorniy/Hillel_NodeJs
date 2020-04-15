@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+
+<head>
+    <meta charset="utf-8">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+</head>
+
+<body class="container" style="height: 100%; background-color: #5f6468; color: whitesmoke;">
+    <p class="lead">Добро пожаловать в чат!</p>
+
+    <form id="publish" class="form-inline" method="POST">
+        <div name="username">UserName1</div>
+        <input type="text" name="message" />
+        <input type="submit" class="btn btn-primary" value="Отправить" />
+    </form>
+
+    <ul class="d-flex flex-column messages"></ul>
+
+    <script src="\createElement.js"></script>
+    <script src="\main.js"></script>
+    <script src="\elements.js"></script>
+</body>
+
+</html>
