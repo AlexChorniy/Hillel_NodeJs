@@ -11,8 +11,8 @@ router.get("/messages/:id", paramsGetById, ctrl.getMessageById);
 router.post("/messages", ctrl.addNewMassage);
 router.put("/messages/:id",
     paramsGetById,
-    ctrl.updateNewMassage
+    ctrl.updateMassageById
 );
-router.delete("/messages/:id", paramsGetById, ctrl.addNewMassage);
+router.delete("/messages/:id", paramsGetById, ctrl.deleteMassageById);
 
 module.exports = router;
