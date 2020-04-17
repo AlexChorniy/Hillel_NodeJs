@@ -13,7 +13,6 @@ server.use(express.urlencoded({ extended: true }));
 
 server.use((req, res, next) => {
     const { headers } = req;
-    console.log('%s', req.url, Date.now());
     let finished = false;
     const start_time = Date.now();
     const url = new URL(req.url, `http://${req.headers.host}`);

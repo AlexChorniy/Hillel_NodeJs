@@ -7,10 +7,10 @@ const {
 } = require('./messages.validation');
 
 router.get("/messages", ctrl.getMessagesHandler);
-// router.get("/messages/:id", paramsGetById, ctrl.getMessageById);
 router.post("/messages/add", ctrl.addNewMassage);
 router.put("/messages/:id",
     paramsGetById,
+    bodyUpdateMessageValidation,
     ctrl.updateMassageById
 );
 router.delete("/messages/:id", paramsGetById, ctrl.deleteMassageById);

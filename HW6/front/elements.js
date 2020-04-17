@@ -17,9 +17,8 @@ const printLiElement = (parent, body, index) => {
     // printButton(`${liClassName} ${liExtraClass}`, 'Save', 'submit');
 };
 
-const addZero = num => num < 10 ? `0${num}` : num;
-
 const dayToday = (unixDate, isEntered = false) => {
+    const addZero = num => num < 10 ? `0${num}` : num;
     const newDate = unixDate || Date.now();
     const day = new Date(newDate).getDate();
     const month = new Date(newDate).getMonth() + 1;

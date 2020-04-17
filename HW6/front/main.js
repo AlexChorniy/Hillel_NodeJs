@@ -30,7 +30,7 @@ function subscribe() {
     const xhr = new XMLHttpRequest();
     let DATA;
 
-    xhr.open("GET", "/messages", true);
+    xhr.open("GET", `/messages`, true);
 
     xhr.setRequestHeader("Content-type", "application/json");
 
@@ -43,6 +43,7 @@ function subscribe() {
             return;
         }
         DATA = JSON.parse(this.responseText);
+        console.log('main.js subscribe', window.location.href);
         document.getElementsByClassName('messages')[0].innerHTML = '';
         if (DATA) {
             DATA.map((data, idx) => {

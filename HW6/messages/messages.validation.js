@@ -12,6 +12,9 @@ exports.paramsGetById = (req, res, next) => {
 };
 
 exports.bodyUpdateMessageValidation = (req, res, next) => {
-    //TODO
+    console.log('mes.val.js bodyUpdateMessageValidation', req.body);
+    if (typeof req.body !== 'string') {
+        return next({ code: 404, message: 'type of message must be a string' });
+    }
     next();
 };
