@@ -7,7 +7,6 @@ const printLiElement = (parent, body, index) => {
 
     const divParent = document.getElementsByClassName(`${liClassName} ${liExtraClass}`)[0];
     const timeCtrl = body.changeTag && body.updatedAt || body.id;
-    // console.log('printLiElement', body);
     body.changeTag
         ? createElement('div', '', body.text || '-', '', divParent, 'btn', liExtraClass, null)
         : printButton(`${liClassName} ${liExtraClass}`, body.text || '-', 'text', liExtraClass);
@@ -18,9 +17,8 @@ const printLiElement = (parent, body, index) => {
     // printButton(`${liClassName} ${liExtraClass}`, 'Save', 'submit');
 };
 
-const addZero = num => num < 10 ? `0${num}` : num;
-
 const dayToday = (unixDate, isEntered = false) => {
+    const addZero = num => num < 10 ? `0${num}` : num;
     const newDate = unixDate || Date.now();
     const day = new Date(newDate).getDate();
     const month = new Date(newDate).getMonth() + 1;

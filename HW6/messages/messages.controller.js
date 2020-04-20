@@ -1,10 +1,13 @@
 exports.getMessagesHandler = (req, res, next) => {
     const { messages } = res.app.locals;
+
     const newMessage = messages.map(
         ({ text, sender, id, changeTag, updatedAt }) => ({ text, sender, id, changeTag, updatedAt })
     );
     res.app.locals.messages = newMessage;
+    console.log('getMessagesHandler', newMessage);
     res.status(200).send(newMessage);
+    next();
 };
 
 exports.getMessageById = (req, res, next) => {
@@ -14,6 +17,7 @@ exports.getMessageById = (req, res, next) => {
         return next({ code: 404, message: 'note found' });
     }
     res.status(200).send(messages.find(message => message.id === id));
+    next();
 };
 
 exports.updateMassageById = (req, res, next) => {
@@ -22,7 +26,6 @@ exports.updateMassageById = (req, res, next) => {
     const { id } = req.params;
     const message = messages.map(mes => {
         if (mes.id === id) {
-            // console.log('mes.ctrl updateMassageById', mes);
             mes.changeTag = !mes.changeTag;
             if (mes.changeTag) {
                 mes.text = updatedTxt;
@@ -36,19 +39,22 @@ exports.updateMassageById = (req, res, next) => {
     }
     res.app.locals.messages = message;
     res.status(200).json(message);
+    next();
 };
 
 exports.addNewMassage = (req, res, next) => {
     const { messages } = res.app.locals;
     const { text, sender, id, changeTag } = req.body;
 
-    res.app.locals.messages =
-        [
-            ...messages,
-            { text, sender, id, changeTag }
-        ];
-
-    res.status(200).json(messages);
+    if (text.length > 0) {
+        res.app.locals.messages =
+            [
+                ...messages,
+                { text, sender, id, changeTag }
+            ];
+        res.status(200).json(messages);
+    }
+    next();
 };
 
 exports.deleteMassageById = (req, res, next) => {
@@ -61,4 +67,27 @@ exports.deleteMassageById = (req, res, next) => {
 
     res.app.locals.messages = newMessages;
     res.status(200).json(newMessages);
+    next();
+};
+
+exports.sortMassageByParams = (req, res, next) => {
+    const { messages } = res.app.locals;
+    const { updatedTxt } = req.body;
+    console.log('sortMassageByParams', req.params);
+    // const { id } = req.params;
+    // const message = messages.map(mes => {
+    //     if (mes.id === id) {
+    //         mes.changeTag = !mes.changeTag;
+    //         if (mes.changeTag) {
+    //             mes.text = updatedTxt;
+    //             Object.assign(mes, { updatedAt: Date.now() });
+    //         };
+    //     }
+    //     return mes;
+    // });
+    // if (!message) {
+    //     return next({ code: 404, message: 'note found' });
+    // }
+    // res.app.locals.messages = message;
+
 };

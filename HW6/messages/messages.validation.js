@@ -1,6 +1,5 @@
 exports.paramsGetById = (req, res, next) => {
     const { id } = req.params;
-    console.log('paramsGetById', req.params);
     const idNumber = Number(id);
     const isNumber = !isNaN(idNumber);
     if (!isNumber) {
@@ -12,7 +11,10 @@ exports.paramsGetById = (req, res, next) => {
 
 };
 
-exports.bodyUpdateMessageValidation = () => {
-    //TODO
+exports.bodyUpdateMessageValidation = (req, res, next) => {
+    console.log('mes.val.js bodyUpdateMessageValidation', req.body);
+    if (typeof req.body !== 'string') {
+        return next({ code: 404, message: 'type of message must be a string' });
+    }
     next();
 };

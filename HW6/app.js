@@ -3,11 +3,40 @@ const { join } = require('path');
 require("dotenv").config();
 const server = express();
 const messageModule = require('./messages');
+const { logResponse } = require('./logs/logs.controller');
+
 
 server.locals.messages = [];
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+
+server.use((req, res, next) => {
+    const { headers } = req;
+    let finished = false;
+    const start_time = Date.now();
+    const url = new URL(req.url, `http://${req.headers.host}`);
+
+    const finish_listener = () => {
+        finished = true;
+        const end_time = Date.now();
+        logResponse(
+            start_time,
+            end_time,
+            res.statusCode,
+            headers["user-agent"],
+            url.href
+        );
+    };
+
+    res.once('finish', finish_listener);
+    res.once('close', () => {
+        res.removeListener("finish", finish_listener);
+        if (!finished) finish_listener();
+    });
+
+    next();
+});
 
 server.use(express.static(join(__dirname, 'front')));
 server.use(messageModule);
