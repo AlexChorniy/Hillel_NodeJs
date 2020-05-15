@@ -1,6 +1,4 @@
 const express = require('express');
-const { join } = require('path');
-
 const router = express.Router();
 const ctrl = require('./messages.controller');
 const {
@@ -8,13 +6,25 @@ const {
     bodyUpdateMessageValidation
 } = require('./messages.validation');
 
-router.get("/messages", ctrl.getMessagesHandler);
+
 router.post("/messages/add", ctrl.addNewMassage);
-router.put("/messages/:id",
+router.post("/messages/initial", ctrl.getMessagesHandler);
+router.put("/messages/update/:id",
     paramsGetById,
     bodyUpdateMessageValidation,
     ctrl.updateMassageById
 );
 router.delete("/messages/:id", paramsGetById, ctrl.deleteMassageById);
+router.get("/messages", () => console.log('ctrl.getMessagesHandler'));
+router.get("/ ?*", (req, res, next) => {
+    const render_obj = {
+        title: "Title HW7",
+        userName: "UserName1",
+        time: `Current time ${Date.now()}`
+    };
+    res.render("index.nj", render_obj);
+
+    next();
+});
 
 module.exports = router;

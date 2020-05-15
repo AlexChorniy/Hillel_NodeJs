@@ -1,11 +1,9 @@
 exports.getMessagesHandler = (req, res, next) => {
     const { messages } = res.app.locals;
-
     const newMessage = messages.map(
         ({ text, sender, id, changeTag, updatedAt }) => ({ text, sender, id, changeTag, updatedAt })
     );
     res.app.locals.messages = newMessage;
-    console.log('getMessagesHandler', req.query);
     res.status(200).json(newMessage);
     next();
 };
@@ -28,6 +26,7 @@ exports.updateMassageById = (req, res, next) => {
         if (mes.id === id) {
             mes.changeTag = !mes.changeTag;
             if (mes.changeTag) {
+                console.log('updateMassageById', updatedTxt);
                 mes.text = updatedTxt;
                 Object.assign(mes, { updatedAt: Date.now() });
             };
@@ -45,27 +44,30 @@ exports.updateMassageById = (req, res, next) => {
 exports.addNewMassage = (req, res, next) => {
     const { messages } = res.app.locals;
     const { text, sender, id, changeTag } = req.body;
-
     if (text.length > 0) {
         res.app.locals.messages =
             [
                 ...messages,
                 { text, sender, id, changeTag }
             ];
-        res.status(200).json(messages);
+        res.status(200).json(res.app.locals.messages);
     }
     next();
 };
 
 exports.deleteMassageById = (req, res, next) => {
+
     let { messages } = res.app.locals;
     const { id } = req.params;
     if (!messages) {
         return next({ code: 404, message: 'note found' });
     }
     const newMessages = messages.filter(mes => mes.id !== id);
-
     res.app.locals.messages = newMessages;
     res.status(200).json(newMessages);
     next();
+};
+
+exports.sortMasseges = (req, res, next) => {
+
 };
