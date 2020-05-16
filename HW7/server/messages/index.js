@@ -23,7 +23,6 @@ router.get("/ ?*", (req, res, next) => {
         time: `Current time ${Date.now()}`
     };
     res.render("index.nj", render_obj);
-
     next();
 });
 

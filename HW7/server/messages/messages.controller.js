@@ -72,10 +72,14 @@ exports.sortMasseges = (req, res, next) => {
     let { messages } = res.app.locals;
     let newMessages = [];
     const sortingOptions = {
-        text: () => messages.sort((a, b) => sortValue === 'asc' ? sortTextAsc(a.text, b.text) : sortTextDesc(a.text, b.text)),
-        id: () => messages.sort((firstNum, secondNum) => sortValue === 'asc' ? secondNum.id - firstNum.id : firstNum.id - secondNum.id),
-        sender: () => messages.sort((a, b) => sortValue === 'asc' ? sortTextAsc(a.sender, b.sender) : sortTextDesc(a.sender, b.sender)),
-        addedAt: () => messages.sort((a, b) => sortValue === 'asc' ? sortTextAsc(a.addedAt, b.addedAt) : sortTextAsc(a.addedAt, b.addedAt)),
+        text: () => messages.sort((a, b) => sortValueOptions[sortValue] === 'asc' ? sortTextAsc(a.text, b.text) : sortTextDesc(a.text, b.text)),
+        id: () => messages.sort((firstNum, secondNum) => sortValueOptions[sortValue] === 'asc' ? secondNum.id - firstNum.id : firstNum.id - secondNum.id),
+        sender: () => messages.sort((a, b) => sortValueOptions[sortValue] === 'asc' ? sortTextAsc(a.sender, b.sender) : sortTextDesc(a.sender, b.sender)),
+        addedAt: () => messages.sort((a, b) => sortValueOptions[sortValue] === 'asc' ? sortTextAsc(a.addedAt, b.addedAt) : sortTextAsc(a.addedAt, b.addedAt)),
+    };
+    const sortValueOptions = {
+        asc: 'asc',
+        desc: 'desc'
     };
     const sortTextAsc = (a, b) => {
         if (a < b) return -1
@@ -84,7 +88,7 @@ exports.sortMasseges = (req, res, next) => {
         if (a > b) return -1
     };
 
-    if (sortingOptions[sort]) {
+    if (sortingOptions[sort] && sortValueOptions[sortValue]) {
         newMessages = sortingOptions[sort]();
         res.app.locals.messages = newMessages;
         res.status(200).json(newMessages);
