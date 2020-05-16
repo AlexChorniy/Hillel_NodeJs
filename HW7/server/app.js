@@ -51,7 +51,6 @@ nunjucks.configure(VIEW_DIR, {
 app.locals.messages = testData || [];
 
 app.use('/public', express.static(ASSETS_DIR));
-app.use('/messages', messageModule);
 app.use('/', messageModule);
 
 app.use(function (err, req, res, next) {

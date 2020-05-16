@@ -15,7 +15,7 @@ router.put("/messages/update/:id",
     ctrl.updateMassageById
 );
 router.delete("/messages/:id", paramsGetById, ctrl.deleteMassageById);
-router.get("/messages", () => console.log('ctrl.getMessagesHandler'));
+router.post("/messages", ctrl.sortMasseges);
 router.get("/ ?*", (req, res, next) => {
     const render_obj = {
         title: "Title HW7",
