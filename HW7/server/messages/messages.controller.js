@@ -1,11 +1,9 @@
 exports.getMessagesHandler = (req, res, next) => {
     const { messages } = res.app.locals;
-
     const newMessage = messages.map(
         ({ text, sender, id, changeTag, updatedAt }) => ({ text, sender, id, changeTag, updatedAt })
     );
     res.app.locals.messages = newMessage;
-    console.log('getMessagesHandler', req.query);
     res.status(200).json(newMessage);
     next();
 };
@@ -28,6 +26,7 @@ exports.updateMassageById = (req, res, next) => {
         if (mes.id === id) {
             mes.changeTag = !mes.changeTag;
             if (mes.changeTag) {
+                console.log('updateMassageById', updatedTxt);
                 mes.text = updatedTxt;
                 Object.assign(mes, { updatedAt: Date.now() });
             };
@@ -45,14 +44,13 @@ exports.updateMassageById = (req, res, next) => {
 exports.addNewMassage = (req, res, next) => {
     const { messages } = res.app.locals;
     const { text, sender, id, changeTag } = req.body;
-
     if (text.length > 0) {
         res.app.locals.messages =
             [
                 ...messages,
                 { text, sender, id, changeTag }
             ];
-        res.status(200).json(messages);
+        res.status(200).json(res.app.locals.messages);
     }
     next();
 };
@@ -64,8 +62,38 @@ exports.deleteMassageById = (req, res, next) => {
         return next({ code: 404, message: 'note found' });
     }
     const newMessages = messages.filter(mes => mes.id !== id);
-
     res.app.locals.messages = newMessages;
     res.status(200).json(newMessages);
     next();
+};
+
+exports.sortMasseges = (req, res, next) => {
+    const { sort = 'addedAt', sortValue = 'desc', limit = 10, skip = 0 } = req.query;
+    let { messages } = res.app.locals;
+    let newMessages = [];
+    const sortingOptions = {
+        text: () => messages.sort((a, b) => sortValueOptions[sortValue] === 'asc' ? sortTextAsc(a.text, b.text) : sortTextDesc(a.text, b.text)),
+        id: () => messages.sort((firstNum, secondNum) => sortValueOptions[sortValue] === 'asc' ? secondNum.id - firstNum.id : firstNum.id - secondNum.id),
+        sender: () => messages.sort((a, b) => sortValueOptions[sortValue] === 'asc' ? sortTextAsc(a.sender, b.sender) : sortTextDesc(a.sender, b.sender)),
+        addedAt: () => messages.sort((a, b) => sortValueOptions[sortValue] === 'asc' ? sortTextAsc(a.addedAt, b.addedAt) : sortTextAsc(a.addedAt, b.addedAt)),
+    };
+    const sortValueOptions = {
+        asc: 'asc',
+        desc: 'desc'
+    };
+    const sortTextAsc = (a, b) => {
+        if (a < b) return -1
+    };
+    const sortTextDesc = (a, b) => {
+        if (a > b) return -1
+    };
+
+    if (sortingOptions[sort] && sortValueOptions[sortValue]) {
+        newMessages = sortingOptions[sort]();
+        res.app.locals.messages = newMessages;
+        res.status(200).json(newMessages);
+        next();
+    } else {
+        next({ code: 404, message: 'wrong query' });
+    }
 };

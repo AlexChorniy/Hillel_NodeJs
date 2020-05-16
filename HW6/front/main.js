@@ -6,7 +6,7 @@ publish.onsubmit = function () {
 
     const senderName = document.getElementsByName('username')[0].innerText || 'userName1';
 
-    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("content-type", "application/json");
     xhr.send(JSON.stringify({
         text: this.elements.message.value,
         sender: senderName,
@@ -28,11 +28,11 @@ if (filter) {
 
 function subscribe() {
     const xhr = new XMLHttpRequest();
-    let DATA;
+    let DATA = [];
 
     xhr.open("GET", `/messages`, true);
 
-    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("content-type", "application/json");
 
     xhr.onreadystatechange = function () {
 
@@ -43,7 +43,6 @@ function subscribe() {
             return;
         }
         DATA = JSON.parse(this.responseText);
-        console.log('main.js subscribe', window.location.href);
         document.getElementsByClassName('messages')[0].innerHTML = '';
         if (DATA) {
             DATA.map((data, idx) => {
@@ -53,7 +52,6 @@ function subscribe() {
             });
         }
     };
-
     xhr.send(DATA);
     return false;
 };
@@ -65,7 +63,7 @@ function update(e) {
     const xhr = new XMLHttpRequest();
     xhr.open("PUT", `/messages/${unixClass}`, true);
 
-    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("content-type", "application/json");
 
     xhr.onreadystatechange = function () {
 
