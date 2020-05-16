@@ -86,12 +86,10 @@ exports.sortMasseges = (req, res, next) => {
 
     if (sortingOptions[sort]) {
         newMessages = sortingOptions[sort]();
+        res.app.locals.messages = newMessages;
+        res.status(200).json(newMessages);
+        next();
     } else {
-        // next({ code: 404, message: 'wrong query' });
-        console.log('wrong query');
+        next({ code: 404, message: 'wrong query' });
     }
-    // console.log('sortMasseges', newMessages);
-    res.app.locals.messages = newMessages;
-    res.status(200).json(newMessages);
-    next();
 };
